@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop';
 $packageName= 'habitat.portable'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url        = ''
-$url64      = 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-0.31.0-20170907224444-x86_64-windows.zip?bt_package=hab-x86_64-windows'
+$url64      = 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-#{hab_version}-x86_64-windows.zip?bt_package=hab-x86_64-windows'
 
 $packageArgs = @{
   packageName   = $packageName

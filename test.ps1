@@ -1,0 +1,1 @@
+choco install habitat.portable -dv -y -pre --force -s .build

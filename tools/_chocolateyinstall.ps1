@@ -3,8 +3,8 @@ $ErrorActionPreference = 'Stop';
 
 $packageName= 'habitat.portable'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = ''
-$url64      = 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-#{hab_version}-x86_64-windows.zip?bt_package=hab-x86_64-windows'
+$url        = 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-#{hab_version}-x86_64-windows.zip?bt_package=hab-x86_64-windows'
+$checksum   = "9AF0525CAB1027073D6F6D303239EF1F4EFCC99676F502F1B87CA77C640FE6AB"
 
 $packageArgs = @{
   packageName   = $packageName
@@ -17,9 +17,6 @@ $packageArgs = @{
 
   checksum      = ''
   checksumType  = 'sha256'
-  checksum64    = ''
-  checksumType64= 'sha256'
-
 }
 
 

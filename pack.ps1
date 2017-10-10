@@ -12,9 +12,8 @@ if (!(test-path $outdir)) { $null = mkdir $outdir }
 
 # 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-%24latest-x86_64-windows.zip?bt_package=hab-x86_64-windows'
 
-$pkgBuildNo = "03"
-$habitatBaseVer = "0.31.0"
-$habitatBuild = "20170907224444"
+. "$PSScriptRoot\version.ps1"
+
 $habitatVer = "$habitatBaseVer-$habitatBuild"
 
 
@@ -45,13 +44,26 @@ foreach($specfile in $specs) {
 }
 
 
-# remove comments from chocolateyinstall
-$f = ".\tools\_chocolateyinstall.ps1"
-gc $f | ? {$_ -notmatch "^\s*#"} | % {$_ -replace '(^.*?)\s*?[^``]#.*','$1'} | Out-File $f+".~" -en utf8; mv -fo $f+".~" $f.Replace("\_","\")
+$url = "https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-$habitatVer-x86_64-windows.zip?bt_package=hab-x86_64-windows"
+$file = "hab-$habitatVer-x86_64-windows.zip"
+if (!(test-path $file)) {
+    Invoke-WebRequest $url -UseBasicParsing -OutFile $file
+}
+$checksum = (get-filehash -Path $file -Algorithm sha256).hash
 
-# replace version placeholder (use ruby syntax: #{var})
-gc $f | ? {$_ -notmatch "^\s*#"} | % {$_ -replace '#{hab_version}',$habitatVer } | Out-File $f+".~" -en utf8; mv -fo $f+".~" $f.Replace("\_","\")
 
+$files = @(".\tools\_chocolateyinstall.ps1")
+
+foreach($f in $files) {
+        
+    gc $f | ? {$_ -notmatch "^\s*#"} | 
+        % { $_ -replace '#{url}',$url } | # replace version placeholder (use ruby-like syntax: #{var})
+        % { $_ -replace '#{checksum}',$checksum } |
+        % { $_ -replace '(^.*?)\s*?[^``]#.*','$1' } | # remove comments 
+        Out-File ($f+".~") -en utf8
+    
+    move-item ($f+".~") $f.Replace("\_","\") -Force 
+}
 
 # pack
 foreach($specfile in $specs) {

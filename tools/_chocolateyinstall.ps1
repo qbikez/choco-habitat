@@ -1,10 +1,10 @@
-﻿
-$ErrorActionPreference = 'Stop';
+﻿$ErrorActionPreference = 'Stop';
+
 
 $packageName= 'habitat.portable'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-#{hab_version}-x86_64-windows.zip?bt_package=hab-x86_64-windows'
-$checksum   = "9AF0525CAB1027073D6F6D303239EF1F4EFCC99676F502F1B87CA77C640FE6AB"
+$url        = '#{url}'
+$checksum   = "#{checksum}"
 
 $packageArgs = @{
   packageName   = $packageName
@@ -15,7 +15,7 @@ $packageArgs = @{
 
   softwareName  = 'habitat*'
 
-  checksum      = ''
+  checksum      = $checksum
   checksumType  = 'sha256'
 }
 
